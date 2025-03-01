@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('Pull Code') {
+            steps {
+                script {
+                    // Define the folder where the repository will be cloned
+                    def targetDir = '/var/jenkins_home/workspace/develop_build'
+
+                    // Ensure the folder exists
+                    sh "mkdir -p ${targetDir}"
+
+                    // Clone or pull latest code
+                    sh """
+                        if [ -d ${targetDir}/.git ]; then
+                            cd ${targetDir}
+                            git pull origin develop
+                        else
+                            git clone -b develop https://github.com/shaktidutta/git_assignment.git ${targetDir}
+                        fi
+                    """
+                }
+            }
+        }
+    }
+}
